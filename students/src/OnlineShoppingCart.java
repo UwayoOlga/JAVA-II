@@ -164,9 +164,9 @@ public class OnlineShoppingCart extends JFrame {
     // Method to save order to the database
     private void saveOrderToDatabase(String customerName, String productCategory, String productName, String price, String quantity, String totalAmount) {
         // Database connection details
-        String url = "jdbc:mysql://localhost:3306/students"; // Update with your database name
-        String user = "root"; // Update with your database username
-        String password = "California123!"; // Update with your database password
+        String url = "jdbc:mysql://localhost:3306/students";
+        String user = "root";
+        String password = "California123!";
 
         // SQL query to insert data
         String query = "INSERT INTO orders (customer_name, product_category, product_name, price, quantity, total_amount) VALUES (?, ?, ?, ?, ?, ?)";
