@@ -13,34 +13,33 @@ public class OnlineShoppingCart extends JFrame {
     private JTextField customerNameField, productNameField, priceField, quantityField, totalAmountField;
     private JComboBox<String> productCategoryComboBox;
 
+//The  GUI components constructor and properties
     public OnlineShoppingCart() {
         setTitle("Online Shopping Cart");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null); // Use absolute positioning
+        setLayout(null);
+        getContentPane().setBackground(new Color(255, 182, 193));
 
-        // Set light pink background for the JFrame
-        getContentPane().setBackground(new Color(255, 182, 193)); // Light pink
-
-        // Labels with darker pink foreground
+        // Labels
         JLabel customerNameLabel = new JLabel("Customer Name:");
         customerNameLabel.setBounds(50, 50, 150, 25);
-        customerNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        customerNameLabel.setForeground(new Color(199, 21, 133));
         JLabel productCategoryLabel = new JLabel("Product Category:");
         productCategoryLabel.setBounds(50, 80, 150, 25);
-        productCategoryLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        productCategoryLabel.setForeground(new Color(199, 21, 133));
         JLabel productNameLabel = new JLabel("Product Name:");
         productNameLabel.setBounds(50, 110, 150, 25);
-        productNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        productNameLabel.setForeground(new Color(199, 21, 133));
         JLabel priceLabel = new JLabel("Price:");
         priceLabel.setBounds(50, 140, 150, 25);
-        priceLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        priceLabel.setForeground(new Color(199, 21, 133));
         JLabel quantityLabel = new JLabel("Quantity:");
         quantityLabel.setBounds(50, 170, 150, 25);
-        quantityLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        quantityLabel.setForeground(new Color(199, 21, 133));
         JLabel totalAmountLabel = new JLabel("Total Amount:");
         totalAmountLabel.setBounds(50, 200, 150, 25);
-        totalAmountLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        totalAmountLabel.setForeground(new Color(199, 21, 133));
 
         // Text Fields
         customerNameField = new JTextField();
@@ -53,7 +52,7 @@ public class OnlineShoppingCart extends JFrame {
         quantityField.setBounds(250, 170, 200, 25);
         totalAmountField = new JTextField();
         totalAmountField.setBounds(250, 200, 200, 25);
-        totalAmountField.setEditable(false); // Total Amount field should not be editable
+        totalAmountField.setEditable(false);
 
         // Combo Box for Product Category
         productCategoryComboBox = new JComboBox<>(new String[]{"Electronics", "Clothing", "Groceries"});
@@ -62,8 +61,8 @@ public class OnlineShoppingCart extends JFrame {
         // Submit Button
         JButton submitButton = new JButton("Submit");
         submitButton.setBounds(250, 270, 100, 30);
-        submitButton.setBackground(new Color(199, 21, 133)); // Darker pink background
-        submitButton.setForeground(Color.WHITE); // White text
+        submitButton.setBackground(new Color(199, 21, 133));
+        submitButton.setForeground(Color.WHITE);
 
         // Add components to the JFrame
         add(customerNameLabel);
@@ -99,7 +98,7 @@ public class OnlineShoppingCart extends JFrame {
 
             // Validate input
             if (!validateInput(customerName, productName, price, quantity)) {
-                return; // Stop if validation fails
+                return;
             }
 
             // Save order to the database
