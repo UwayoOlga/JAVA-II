@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public class OnlineShoppingCart extends JFrame {
     // Declare components as instance variables for access in event listeners
@@ -18,19 +19,28 @@ public class OnlineShoppingCart extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null); // Use absolute positioning
 
-        // Labels
+        // Set light pink background for the JFrame
+        getContentPane().setBackground(new Color(255, 182, 193)); // Light pink
+
+        // Labels with darker pink foreground
         JLabel customerNameLabel = new JLabel("Customer Name:");
         customerNameLabel.setBounds(50, 50, 150, 25);
+        customerNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel productCategoryLabel = new JLabel("Product Category:");
         productCategoryLabel.setBounds(50, 80, 150, 25);
+        productCategoryLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel productNameLabel = new JLabel("Product Name:");
         productNameLabel.setBounds(50, 110, 150, 25);
+        productNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel priceLabel = new JLabel("Price:");
         priceLabel.setBounds(50, 140, 150, 25);
+        priceLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel quantityLabel = new JLabel("Quantity:");
         quantityLabel.setBounds(50, 170, 150, 25);
+        quantityLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel totalAmountLabel = new JLabel("Total Amount:");
         totalAmountLabel.setBounds(50, 200, 150, 25);
+        totalAmountLabel.setForeground(new Color(199, 21, 133)); // Darker pink
 
         // Text Fields
         customerNameField = new JTextField();
@@ -52,6 +62,8 @@ public class OnlineShoppingCart extends JFrame {
         // Submit Button
         JButton submitButton = new JButton("Submit");
         submitButton.setBounds(250, 270, 100, 30);
+        submitButton.setBackground(new Color(199, 21, 133)); // Darker pink background
+        submitButton.setForeground(Color.WHITE); // White text
 
         // Add components to the JFrame
         add(customerNameLabel);
@@ -85,9 +97,9 @@ public class OnlineShoppingCart extends JFrame {
             String quantity = quantityField.getText();
             String totalAmount = totalAmountField.getText();
 
-            if (customerName.isEmpty() || productName.isEmpty() || price.isEmpty() || quantity.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please fill all fields.");
-                return;
+            // Validate input
+            if (!validateInput(customerName, productName, price, quantity)) {
+                return; // Stop if validation fails
             }
 
             // Save order to the database
@@ -107,6 +119,47 @@ public class OnlineShoppingCart extends JFrame {
         } catch (NumberFormatException ex) {
             totalAmountField.setText(""); // Clear if input is invalid
         }
+    }
+
+    // Method to validate input
+    private boolean validateInput(String customerName, String productName, String price, String quantity) {
+        // Validate Customer Name
+        if (!Pattern.matches("[a-zA-Z ]+", customerName)) {
+            JOptionPane.showMessageDialog(this, "Customer Name must contain only alphabetic characters and spaces.");
+            return false;
+        }
+
+        // Validate Product Name
+        if (productName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Product Name cannot be empty.");
+            return false;
+        }
+
+        // Validate Price
+        try {
+            double priceValue = Double.parseDouble(price);
+            if (priceValue <= 0) {
+                JOptionPane.showMessageDialog(this, "Price must be a positive number.");
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Price must be a valid number.");
+            return false;
+        }
+
+        // Validate Quantity
+        try {
+            int quantityValue = Integer.parseInt(quantity);
+            if (quantityValue <= 0) {
+                JOptionPane.showMessageDialog(this, "Quantity must be a positive integer.");
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Quantity must be a valid integer.");
+            return false;
+        }
+
+        return true; // All validations passed
     }
 
     // Method to save order to the database
