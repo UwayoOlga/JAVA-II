@@ -1,63 +1,92 @@
 import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public class registrationform extends JFrame {
+    // Declare components as instance variables for access in event listeners
+    private JTextField firstNameField, lastNameField, dobField, feesField;
+    private JRadioButton maleRadioButton, femaleRadioButton;
+    private JComboBox<String> courseComboBox;
+    private JCheckBox termsCheckBox;
+
     public registrationform() {
         setTitle("Student Registration System");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null); // Use absolute positioning
 
-        // Labels
+        // Set light pink background for the JFrame
+        getContentPane().setBackground(new Color(255, 182, 193)); // Light pink
+
+        // Labels with darker pink foreground
         JLabel firstNameLabel = new JLabel("First Name:");
         firstNameLabel.setBounds(50, 50, 150, 25);
+        firstNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel lastNameLabel = new JLabel("Last Name:");
         lastNameLabel.setBounds(50, 80, 150, 25);
-        JLabel dobLabel = new JLabel("Date of Birth:");
+        lastNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        JLabel dobLabel = new JLabel("Date of Birth (YYYY-MM-DD):");
         dobLabel.setBounds(50, 110, 150, 25);
+        dobLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel genderLabel = new JLabel("Gender:");
         genderLabel.setBounds(50, 140, 150, 25);
+        genderLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel courseLabel = new JLabel("Selected Course:");
         courseLabel.setBounds(50, 170, 150, 25);
+        courseLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel feesLabel = new JLabel("Fees:");
         feesLabel.setBounds(50, 200, 150, 25);
+        feesLabel.setForeground(new Color(199, 21, 133)); // Darker pink
         JLabel termsLabel = new JLabel("Terms and Conditions:");
         termsLabel.setBounds(50, 230, 150, 25);
+        termsLabel.setForeground(new Color(199, 21, 133)); // Darker pink
 
         // Text Fields
-        JTextField firstNameField = new JTextField();
+        firstNameField = new JTextField();
         firstNameField.setBounds(250, 50, 200, 25);
-        JTextField lastNameField = new JTextField();
+        lastNameField = new JTextField();
         lastNameField.setBounds(250, 80, 200, 25);
-        JTextField dobField = new JTextField();
+        dobField = new JTextField();
         dobField.setBounds(250, 110, 200, 25);
-        JTextField feesField = new JTextField();
+        feesField = new JTextField();
         feesField.setBounds(250, 200, 200, 25);
         feesField.setEditable(false); // Fees field should not be editable
 
         // Gender Radio Buttons
-        JRadioButton maleRadioButton = new JRadioButton("Male");
+        maleRadioButton = new JRadioButton("Male");
         maleRadioButton.setBounds(250, 140, 80, 25);
-        JRadioButton femaleRadioButton = new JRadioButton("Female");
+        maleRadioButton.setBackground(new Color(255, 182, 193)); // Light pink background
+        femaleRadioButton = new JRadioButton("Female");
         femaleRadioButton.setBounds(330, 140, 80, 25);
+        femaleRadioButton.setBackground(new Color(255, 182, 193)); // Light pink background
         ButtonGroup genderGroup = new ButtonGroup();
         genderGroup.add(maleRadioButton);
         genderGroup.add(femaleRadioButton);
 
         // Course Combo Box
-        JComboBox<String> courseComboBox = new JComboBox<>(new String[]{"Java", "Python", "C++"});
+        courseComboBox = new JComboBox<>(new String[]{"Java", "Python", "C++"});
         courseComboBox.setBounds(250, 170, 200, 25);
 
         // Terms and Conditions Checkbox
-        JCheckBox termsCheckBox = new JCheckBox("Accept Terms and Conditions");
+        termsCheckBox = new JCheckBox("Accept Terms and Conditions");
         termsCheckBox.setBounds(250, 230, 200, 25);
+        termsCheckBox.setBackground(new Color(255, 182, 193)); // Light pink background
 
         // Save Button
         JButton saveButton = new JButton("Save");
         saveButton.setBounds(250, 270, 100, 30);
+        saveButton.setBackground(new Color(199, 21, 133)); // Darker pink background
+        saveButton.setForeground(Color.WHITE); // White text
+
+        // Clear Button
+        JButton clearButton = new JButton("Clear");
+        clearButton.setBounds(360, 270, 100, 30);
+        clearButton.setBackground(new Color(199, 21, 133)); // Darker pink background
+        clearButton.setForeground(Color.WHITE); // White text
 
         // Add components to the JFrame
         add(firstNameLabel);
@@ -76,6 +105,7 @@ public class registrationform extends JFrame {
         add(termsLabel);
         add(termsCheckBox);
         add(saveButton);
+        add(clearButton);
 
         // Event Listener for Course Selection
         courseComboBox.addActionListener(e -> calculateFees(courseComboBox, feesField));
@@ -90,18 +120,17 @@ public class registrationform extends JFrame {
             String fees = feesField.getText();
             boolean termsAccepted = termsCheckBox.isSelected();
 
-            if (firstName.isEmpty() || lastName.isEmpty() || dob.isEmpty() || (!gender.equals("Male") && !gender.equals("Female"))) {
-                JOptionPane.showMessageDialog(this, "Please fill all fields and select a gender.");
-                return;
-            }
-            if (!termsAccepted) {
-                JOptionPane.showMessageDialog(this, "Please accept the terms and conditions.");
-                return;
+            // Validate input
+            if (!validateInput(firstName, lastName, dob, gender, termsAccepted)) {
+                return; // Stop if validation fails
             }
 
             // Save data to the database
             saveToDatabase(firstName, lastName, dob, gender, course, fees);
         });
+
+        // Event Listener for Clear Button
+        clearButton.addActionListener(e -> clearForm());
 
         setVisible(true);
     }
@@ -120,6 +149,41 @@ public class registrationform extends JFrame {
                 feesField.setText("400");
                 break;
         }
+    }
+
+    // Method to validate input
+    private boolean validateInput(String firstName, String lastName, String dob, String gender, boolean termsAccepted) {
+        // Validate First Name
+        if (!Pattern.matches("[a-zA-Z ]+", firstName)) {
+            JOptionPane.showMessageDialog(this, "First Name must contain only alphabetic characters and spaces.");
+            return false;
+        }
+
+        // Validate Last Name
+        if (!Pattern.matches("[a-zA-Z ]+", lastName)) {
+            JOptionPane.showMessageDialog(this, "Last Name must contain only alphabetic characters and spaces.");
+            return false;
+        }
+
+        // Validate Date of Birth (YYYY-MM-DD)
+        if (!Pattern.matches("\\d{4}-\\d{2}-\\d{2}", dob)) {
+            JOptionPane.showMessageDialog(this, "Date of Birth must be in the format YYYY-MM-DD.");
+            return false;
+        }
+
+        // Validate Gender
+        if (!gender.equals("Male") && !gender.equals("Female")) {
+            JOptionPane.showMessageDialog(this, "Please select a gender.");
+            return false;
+        }
+
+        // Validate Terms and Conditions
+        if (!termsAccepted) {
+            JOptionPane.showMessageDialog(this, "Please accept the terms and conditions.");
+            return false;
+        }
+
+        return true; // All validations passed
     }
 
     // Method to save data to the database
@@ -150,6 +214,18 @@ public class registrationform extends JFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error saving student data: " + ex.getMessage());
         }
+    }
+
+    // Method to clear the form
+    private void clearForm() {
+        firstNameField.setText("");
+        lastNameField.setText("");
+        dobField.setText("");
+        maleRadioButton.setSelected(false);
+        femaleRadioButton.setSelected(false);
+        courseComboBox.setSelectedIndex(0); // Reset to first item
+        feesField.setText("");
+        termsCheckBox.setSelected(false);
     }
 
     public static void main(String[] args) {
