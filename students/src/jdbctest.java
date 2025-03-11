@@ -1,0 +1,2 @@
+public class jdbctest {
+}
