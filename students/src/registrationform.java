@@ -1,84 +1,97 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class registrationform extends JFrame {
-    // UI Components
-    private JTextField firstNameField, lastNameField, dobField, feesField;
-    private JCheckBox maleCheckBox, femaleCheckBox, termsCheckBox;
-    private JComboBox<String> courseComboBox;
-    private JButton saveButton;
-
-    // Database connection details
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/student_db";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "password";
-
     public registrationform() {
-        // Set up the JFrame
         setTitle("Student Registration System");
-        setSize(500, 800);
+        setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(8, 2));
+        setLayout(null); // Use absolute positioning
 
-        // Initialize components
-        firstNameField = new JTextField();
-        lastNameField = new JTextField();
-        dobField = new JTextField();
-        feesField = new JTextField();
+        // Labels
+        JLabel firstNameLabel = new JLabel("First Name:");
+        firstNameLabel.setBounds(50, 50, 150, 25);
+        JLabel lastNameLabel = new JLabel("Last Name:");
+        lastNameLabel.setBounds(50, 80, 150, 25);
+        JLabel dobLabel = new JLabel("Date of Birth:");
+        dobLabel.setBounds(50, 110, 150, 25);
+        JLabel genderLabel = new JLabel("Gender:");
+        genderLabel.setBounds(50, 140, 150, 25);
+        JLabel courseLabel = new JLabel("Selected Course:");
+        courseLabel.setBounds(50, 170, 150, 25);
+        JLabel feesLabel = new JLabel("Fees:");
+        feesLabel.setBounds(50, 200, 150, 25);
+        JLabel termsLabel = new JLabel("Terms and Conditions:");
+        termsLabel.setBounds(50, 230, 150, 25);
+
+        // Text Fields
+        JTextField firstNameField = new JTextField();
+        firstNameField.setBounds(250, 50, 200, 25);
+        JTextField lastNameField = new JTextField();
+        lastNameField.setBounds(250, 80, 200, 25);
+        JTextField dobField = new JTextField();
+        dobField.setBounds(250, 110, 200, 25);
+        JTextField feesField = new JTextField();
+        feesField.setBounds(250, 200, 200, 25);
         feesField.setEditable(false); // Fees field should not be editable
-        maleCheckBox = new JCheckBox("Male");
-        femaleCheckBox = new JCheckBox("Female");
-        termsCheckBox = new JCheckBox("Accept Terms and Conditions");
-        courseComboBox = new JComboBox<>(new String[]{"Java", "Python", "C++"});
-        saveButton = new JButton("Save");
+
+        // Gender Radio Buttons
+        JRadioButton maleRadioButton = new JRadioButton("Male");
+        maleRadioButton.setBounds(250, 140, 80, 25);
+        JRadioButton femaleRadioButton = new JRadioButton("Female");
+        femaleRadioButton.setBounds(330, 140, 80, 25);
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(maleRadioButton);
+        genderGroup.add(femaleRadioButton);
+
+        // Course Combo Box
+        JComboBox<String> courseComboBox = new JComboBox<>(new String[]{"Java", "Python", "C++"});
+        courseComboBox.setBounds(250, 170, 200, 25);
+
+        // Terms and Conditions Checkbox
+        JCheckBox termsCheckBox = new JCheckBox("Accept Terms and Conditions");
+        termsCheckBox.setBounds(250, 230, 200, 25);
+
+        // Save Button
+        JButton saveButton = new JButton("Save");
+        saveButton.setBounds(250, 270, 100, 30);
 
         // Add components to the JFrame
-        add(new JLabel("First Name:"));
+        add(firstNameLabel);
         add(firstNameField);
-        add(new JLabel("Last Name:"));
+        add(lastNameLabel);
         add(lastNameField);
-        add(new JLabel("Date of Birth (YYYY-MM-DD):"));
+        add(dobLabel);
         add(dobField);
-        add(new JLabel("Gender:"));
-        add(maleCheckBox);
-        add(new JLabel(""));
-        add(femaleCheckBox);
-        add(new JLabel("Selected Course:"));
+        add(genderLabel);
+        add(maleRadioButton);
+        add(femaleRadioButton);
+        add(courseLabel);
         add(courseComboBox);
-        add(new JLabel("Fees:"));
+        add(feesLabel);
         add(feesField);
-        add(new JLabel(""));
+        add(termsLabel);
         add(termsCheckBox);
-        add(new JLabel(""));
         add(saveButton);
 
-        // Add event listeners
-        courseComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                calculateFees();
-            }
-        });
+        // Event Listener for Course Selection
+        courseComboBox.addActionListener(e -> calculateFees(courseComboBox, feesField));
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveStudentData();
-            }
-        });
+        // Event Listener for Save Button
+        saveButton.addActionListener(e -> saveStudentData(
+                firstNameField.getText(),
+                lastNameField.getText(),
+                dobField.getText(),
+                maleRadioButton.isSelected() ? "Male" : "Female",
+                (String) courseComboBox.getSelectedItem(),
+                feesField.getText(),
+                termsCheckBox.isSelected()
+        ));
 
-        // Display the JFrame
         setVisible(true);
     }
 
     // Method to calculate fees based on course selection
-    private void calculateFees() {
+    private void calculateFees(JComboBox<String> courseComboBox, JTextField feesField) {
         String selectedCourse = (String) courseComboBox.getSelectedItem();
         switch (selectedCourse) {
             case "Java":
@@ -93,43 +106,19 @@ public class registrationform extends JFrame {
         }
     }
 
-    // Method to save student data to the database
-    private void saveStudentData() {
-        // Validate input
-        if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() ||
-                dobField.getText().isEmpty() || (!maleCheckBox.isSelected() && !femaleCheckBox.isSelected()) ||
-                feesField.getText().isEmpty() || !termsCheckBox.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields and accept terms and conditions.");
+    // Method to save student data (dummy implementation)
+    private void saveStudentData(String firstName, String lastName, String dob, String gender, String course, String fees, boolean termsAccepted) {
+        if (firstName.isEmpty() || lastName.isEmpty() || dob.isEmpty() || (!gender.equals("Male") && !gender.equals("Female"))) {
+            JOptionPane.showMessageDialog(this, "Please fill all fields and select a gender.");
             return;
         }
-
-        // Get input values
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-        String dob = dobField.getText();
-        String gender = maleCheckBox.isSelected() ? "Male" : "Female";
-        String course = (String) courseComboBox.getSelectedItem();
-        double fees = Double.parseDouble(feesField.getText());
-
-        // Save to database
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String query = "INSERT INTO students (first_name, last_name, date_of_birth, gender, course, fees) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setString(3, dob);
-            pstmt.setString(4, gender);
-            pstmt.setString(5, course);
-            pstmt.setDouble(6, fees);
-            pstmt.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Student data saved successfully!");
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving student data: " + ex.getMessage());
+        if (!termsAccepted) {
+            JOptionPane.showMessageDialog(this, "Please accept the terms and conditions.");
+            return;
         }
+        JOptionPane.showMessageDialog(this, "Student data saved successfully!");
     }
 
-    // Main method to run the application
     public static void main(String[] args) {
         new registrationform();
     }
