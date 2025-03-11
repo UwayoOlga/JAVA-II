@@ -1,4 +1,8 @@
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class registrationform extends JFrame {
     public registrationform() {
@@ -77,15 +81,27 @@ public class registrationform extends JFrame {
         courseComboBox.addActionListener(e -> calculateFees(courseComboBox, feesField));
 
         // Event Listener for Save Button
-        saveButton.addActionListener(e -> saveStudentData(
-                firstNameField.getText(),
-                lastNameField.getText(),
-                dobField.getText(),
-                maleRadioButton.isSelected() ? "Male" : "Female",
-                (String) courseComboBox.getSelectedItem(),
-                feesField.getText(),
-                termsCheckBox.isSelected()
-        ));
+        saveButton.addActionListener(e -> {
+            String firstName = firstNameField.getText();
+            String lastName = lastNameField.getText();
+            String dob = dobField.getText();
+            String gender = maleRadioButton.isSelected() ? "Male" : "Female";
+            String course = (String) courseComboBox.getSelectedItem();
+            String fees = feesField.getText();
+            boolean termsAccepted = termsCheckBox.isSelected();
+
+            if (firstName.isEmpty() || lastName.isEmpty() || dob.isEmpty() || (!gender.equals("Male") && !gender.equals("Female"))) {
+                JOptionPane.showMessageDialog(this, "Please fill all fields and select a gender.");
+                return;
+            }
+            if (!termsAccepted) {
+                JOptionPane.showMessageDialog(this, "Please accept the terms and conditions.");
+                return;
+            }
+
+            // Save data to the database
+            saveToDatabase(firstName, lastName, dob, gender, course, fees);
+        });
 
         setVisible(true);
     }
@@ -106,17 +122,34 @@ public class registrationform extends JFrame {
         }
     }
 
-    // Method to save student data (dummy implementation)
-    private void saveStudentData(String firstName, String lastName, String dob, String gender, String course, String fees, boolean termsAccepted) {
-        if (firstName.isEmpty() || lastName.isEmpty() || dob.isEmpty() || (!gender.equals("Male") && !gender.equals("Female"))) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields and select a gender.");
-            return;
+    // Method to save data to the database
+    private void saveToDatabase(String firstName, String lastName, String dob, String gender, String course, String fees) {
+        // Database connection details
+        String url = "jdbc:mysql://localhost:3306/students"; // Update with your database name
+        String user = "root"; // Update with your database username
+        String password = "California123!"; // Update with your database password
+
+        // SQL query to insert data
+        String query = "INSERT INTO students (first_name, last_name, date_of_birth, gender, course, fees) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            // Set parameters for the query
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, dob);
+            pstmt.setString(4, gender);
+            pstmt.setString(5, course);
+            pstmt.setDouble(6, Double.parseDouble(fees));
+
+            // Execute the query
+            pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Student data saved successfully!");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving student data: " + ex.getMessage());
         }
-        if (!termsAccepted) {
-            JOptionPane.showMessageDialog(this, "Please accept the terms and conditions.");
-            return;
-        }
-        JOptionPane.showMessageDialog(this, "Student data saved successfully!");
     }
 
     public static void main(String[] args) {
