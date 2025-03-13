@@ -1,3 +1,5 @@
+
+/* Ctrl + Alt + Shift + J
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -300,4 +302,4 @@ public class LoanApplicationForm extends JFrame {
     public static void main(String[] args) {
         new LoanApplicationForm();
     }
-}
+} */

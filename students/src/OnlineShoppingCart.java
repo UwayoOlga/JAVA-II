@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class OnlineShoppingCart extends JFrame {
     // Declare components as instance variables for access in event listeners
-    private JTextField customerNameField, productNameField, priceField, quantityField, totalAmountField;
+    private JTextField customerNameField, product, priceField, quantityField, totalAmountField;
     private JComboBox<String> productCategoryComboBox;
 
 //The  GUI components constructor and properties
@@ -44,8 +44,8 @@ public class OnlineShoppingCart extends JFrame {
         // Text Fields
         customerNameField = new JTextField();
         customerNameField.setBounds(250, 50, 200, 25);
-        productNameField = new JTextField();
-        productNameField.setBounds(250, 110, 200, 25);
+        product = new JTextField();
+        product.setBounds(250, 110, 200, 25);
         priceField = new JTextField();
         priceField.setBounds(250, 140, 200, 25);
         quantityField = new JTextField();
@@ -70,7 +70,7 @@ public class OnlineShoppingCart extends JFrame {
         add(productCategoryLabel);
         add(productCategoryComboBox);
         add(productNameLabel);
-        add(productNameField);
+        add(product);
         add(priceLabel);
         add(priceField);
         add(quantityLabel);
@@ -91,7 +91,7 @@ public class OnlineShoppingCart extends JFrame {
         submitButton.addActionListener(e -> {
             String customerName = customerNameField.getText();
             String productCategory = (String) productCategoryComboBox.getSelectedItem();
-            String productName = productNameField.getText();
+            String productName = product.getText();
             String price = priceField.getText();
             String quantity = quantityField.getText();
             String totalAmount = totalAmountField.getText();
