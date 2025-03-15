@@ -1,5 +1,4 @@
-
-/* Ctrl + Alt + Shift + J
+ 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -10,8 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
-public class LoanApplicationForm extends JFrame {
-    // Declare components as instance variables
+public class LoanApplicationForm extends JFrame { 
     private JTextField memberIdField, firstNameField, lastNameField, contributionField, maxAllowedAmountField,
             requestedAmountField, capitalField, interestField, capitalInterestField;
     private JComboBox<String> loanTypeComboBox;
@@ -21,47 +19,43 @@ public class LoanApplicationForm extends JFrame {
         setTitle("Loan Application Form");
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null); // Use absolute positioning
-
-        // Set light pink background for the JFrame
-        getContentPane().setBackground(new Color(255, 182, 193)); // Light pink
-
-        // Labels with darker pink foreground
+        setLayout(null); 
+        getContentPane().setBackground(new Color(255, 182, 193)); 
+ 
         JLabel memberIdLabel = new JLabel("Member ID:");
         memberIdLabel.setBounds(50, 50, 150, 25);
-        memberIdLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        memberIdLabel.setForeground(new Color(199, 21, 133));  
         JLabel firstNameLabel = new JLabel("First Name:");
         firstNameLabel.setBounds(50, 80, 150, 25);
-        firstNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        firstNameLabel.setForeground(new Color(199, 21, 133));  
         JLabel lastNameLabel = new JLabel("Last Name:");
         lastNameLabel.setBounds(50, 110, 150, 25);
-        lastNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        lastNameLabel.setForeground(new Color(199, 21, 133)); 
         JLabel loanTypeLabel = new JLabel("Loan Type:");
         loanTypeLabel.setBounds(50, 140, 150, 25);
-        loanTypeLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        loanTypeLabel.setForeground(new Color(199, 21, 133));  
         JLabel contributionLabel = new JLabel("Contribution:");
         contributionLabel.setBounds(50, 170, 150, 25);
-        contributionLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        contributionLabel.setForeground(new Color(199, 21, 133));  
         JLabel maxAllowedAmountLabel = new JLabel("Max. Allowed Amount:");
         maxAllowedAmountLabel.setBounds(50, 200, 150, 25);
-        maxAllowedAmountLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        maxAllowedAmountLabel.setForeground(new Color(199, 21, 133));  
         JLabel loanPeriodLabel = new JLabel("Loan Period (Years):");
         loanPeriodLabel.setBounds(50, 230, 150, 25);
-        loanPeriodLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        loanPeriodLabel.setForeground(new Color(199, 21, 133));  
         JLabel requestedAmountLabel = new JLabel("Requested Amount:");
         requestedAmountLabel.setBounds(50, 260, 150, 25);
-        requestedAmountLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        requestedAmountLabel.setForeground(new Color(199, 21, 133));  
         JLabel capitalLabel = new JLabel("Capital:");
         capitalLabel.setBounds(50, 290, 150, 25);
-        capitalLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        capitalLabel.setForeground(new Color(199, 21, 133));  
         JLabel interestLabel = new JLabel("Interest:");
         interestLabel.setBounds(50, 320, 150, 25);
-        interestLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        interestLabel.setForeground(new Color(199, 21, 133));  
         JLabel capitalInterestLabel = new JLabel("Capital + Interest:");
         capitalInterestLabel.setBounds(50, 350, 150, 25);
-        capitalInterestLabel.setForeground(new Color(199, 21, 133)); // Darker pink
-
-        // Text Fields
+        capitalInterestLabel.setForeground(new Color(199, 21, 133));  
+  
         memberIdField = new JTextField();
         memberIdField.setBounds(250, 50, 200, 25);
         firstNameField = new JTextField();
@@ -72,40 +66,33 @@ public class LoanApplicationForm extends JFrame {
         contributionField.setBounds(250, 170, 200, 25);
         maxAllowedAmountField = new JTextField();
         maxAllowedAmountField.setBounds(250, 200, 200, 25);
-        maxAllowedAmountField.setEditable(false); // Non-editable
+        maxAllowedAmountField.setEditable(false);  
         requestedAmountField = new JTextField();
         requestedAmountField.setBounds(250, 260, 200, 25);
         capitalField = new JTextField();
         capitalField.setBounds(250, 290, 200, 25);
-        capitalField.setEditable(false); // Non-editable
+        capitalField.setEditable(false);  
         interestField = new JTextField();
         interestField.setBounds(250, 320, 200, 25);
-        interestField.setEditable(false); // Non-editable
+        interestField.setEditable(false);  
         capitalInterestField = new JTextField();
         capitalInterestField.setBounds(250, 350, 200, 25);
-        capitalInterestField.setEditable(false); // Non-editable
-
-        // Combo Box for Loan Type
+        capitalInterestField.setEditable(false);  
         loanTypeComboBox = new JComboBox<>(new String[]{"Personal", "Student", "Home", "Payday"});
         loanTypeComboBox.setBounds(250, 140, 200, 25);
-
-        // Combo Box for Loan Period
+ 
         loanPeriodComboBox = new JComboBox<>(new Integer[]{1, 2, 3});
         loanPeriodComboBox.setBounds(250, 230, 200, 25);
-
-        // Save Button
+ 
         JButton saveButton = new JButton("Save");
         saveButton.setBounds(250, 400, 100, 30);
-        saveButton.setBackground(new Color(199, 21, 133)); // Darker pink background
-        saveButton.setForeground(Color.WHITE); // White text
-
-        // Clear Button
+        saveButton.setBackground(new Color(199, 21, 133));  
+        saveButton.setForeground(Color.WHITE); 
         JButton clearButton = new JButton("Clear");
         clearButton.setBounds(360, 400, 100, 30);
-        clearButton.setBackground(new Color(199, 21, 133)); // Darker pink background
-        clearButton.setForeground(Color.WHITE); // White text
-
-        // Add components to the JFrame
+        clearButton.setBackground(new Color(199, 21, 133));  
+        clearButton.setForeground(Color.WHITE);
+        
         add(memberIdLabel);
         add(memberIdField);
         add(firstNameLabel);
@@ -131,7 +118,7 @@ public class LoanApplicationForm extends JFrame {
         add(saveButton);
         add(clearButton);
 
-        // Event Listener for Contribution Field
+         
         contributionField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -139,7 +126,7 @@ public class LoanApplicationForm extends JFrame {
             }
         });
 
-        // Event Listener for Requested Amount Field
+        
         requestedAmountField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
