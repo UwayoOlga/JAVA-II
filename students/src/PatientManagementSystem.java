@@ -8,8 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
-public class PatientManagementSystem extends JFrame {
-    // Declare components as instance variables for access in event listeners
+public class PatientManagementSystem extends JFrame { 
     private JTextField patientNameField, patientIdField, daysAdmittedField, totalBillField;
     private JComboBox<String> diseaseTypeComboBox;
     private JCheckBox healthInsuranceCheckBox;
@@ -20,8 +19,7 @@ public class PatientManagementSystem extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         getContentPane().setBackground(new Color(255, 182, 193));
-
-        // Labels with darker pink foreground
+ 
         JLabel patientNameLabel = new JLabel("Patient Name:");
         patientNameLabel.setBounds(50, 50, 150, 25);
         patientNameLabel.setForeground(new Color(199, 21, 133));
@@ -40,8 +38,7 @@ public class PatientManagementSystem extends JFrame {
         JLabel totalBillLabel = new JLabel("Total Bill:");
         totalBillLabel.setBounds(50, 200, 150, 25);
         totalBillLabel.setForeground(new Color(199, 21, 133));
-
-        // Text Fields
+ 
         patientNameField = new JTextField();
         patientNameField.setBounds(250, 50, 200, 25);
         patientIdField = new JTextField();
@@ -51,22 +48,19 @@ public class PatientManagementSystem extends JFrame {
         totalBillField = new JTextField();
         totalBillField.setBounds(250, 200, 200, 25);
         totalBillField.setEditable(false);
-        // Combo Box for Disease Type
+        
         diseaseTypeComboBox = new JComboBox<>(new String[]{"General Checkup", "Surgery", "Maternity"});
         diseaseTypeComboBox.setBounds(250, 110, 200, 25);
-
-        // Checkbox for Health Insurance
+ 
         healthInsuranceCheckBox = new JCheckBox();
         healthInsuranceCheckBox.setBounds(250, 170, 20, 25);
-        healthInsuranceCheckBox.setBackground(new Color(255, 182, 193)); // Light pink background
-
-        // Submit Button
+        healthInsuranceCheckBox.setBackground(new Color(255, 182, 193));  
+ 
         JButton submitButton = new JButton("Submit");
         submitButton.setBounds(250, 270, 100, 30);
-        submitButton.setBackground(new Color(199, 21, 133)); // Darker pink background
-        submitButton.setForeground(Color.WHITE); // White text
-
-        // Add components to the JFrame
+        submitButton.setBackground(new Color(199, 21, 133)); 
+        submitButton.setForeground(Color.WHITE); 
+        
         add(patientNameLabel);
         add(patientNameField);
         add(patientIdLabel);
@@ -81,7 +75,7 @@ public class PatientManagementSystem extends JFrame {
         add(totalBillField);
         add(submitButton);
 
-        // Event Listener for Disease Type and Days Admitted
+        
         diseaseTypeComboBox.addActionListener(e -> calculateTotalBill());
         daysAdmittedField.addKeyListener(new KeyAdapter() {
             @Override
@@ -91,7 +85,7 @@ public class PatientManagementSystem extends JFrame {
         });
         healthInsuranceCheckBox.addActionListener(e -> calculateTotalBill());
 
-        // Event Listener for Submit Button
+        
         submitButton.addActionListener(e -> {
             String patientName = patientNameField.getText();
             String patientId = patientIdField.getText();
@@ -100,19 +94,17 @@ public class PatientManagementSystem extends JFrame {
             boolean hasHealthInsurance = healthInsuranceCheckBox.isSelected();
             String totalBill = totalBillField.getText();
 
-            // Validate input
+            
             if (!validateInput(patientName, patientId, daysAdmitted)) {
-                return; // Stop if validation fails
+                return;  
             }
 
-            // Save data to the database
+            
             saveToDatabase(patientName, patientId, diseaseType, daysAdmitted, hasHealthInsurance, totalBill);
         });
 
         setVisible(true);
     }
-
-    // Method to calculate Total Bill
     private void calculateTotalBill() {
         try {
             String diseaseType = (String) diseaseTypeComboBox.getSelectedItem();
@@ -131,13 +123,11 @@ public class PatientManagementSystem extends JFrame {
                     treatmentCost = 2000;
                     break;
             }
-
-            // Add $50 per extra day if daysAdmitted > 1
+ 
             if (daysAdmitted > 1) {
                 treatmentCost += (daysAdmitted - 1) * 50;
             }
-
-            // Apply 30% discount if health insurance is checked
+ 
             if (hasHealthInsurance) {
                 treatmentCost *= 0.7;
             }
@@ -147,22 +137,19 @@ public class PatientManagementSystem extends JFrame {
             totalBillField.setText("");
         }
     }
-
-    // Method to validate input
+ 
     private boolean validateInput(String patientName, String patientId, String daysAdmitted) {
-        // Validate Patient Name
+ 
         if (!Pattern.matches("[a-zA-Z ]+", patientName)) {
             JOptionPane.showMessageDialog(this, "Patient Name must contain only alphabetic characters and spaces.");
             return false;
         }
-
-        // Validate Patient ID
+ 
         if (patientId.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Patient ID cannot be empty.");
             return false;
         }
-
-        // Validate Days Admitted
+ 
         try {
             int days = Integer.parseInt(daysAdmitted);
             if (days <= 0) {
@@ -174,7 +161,7 @@ public class PatientManagementSystem extends JFrame {
             return false;
         }
 
-        return true; // All validations passed
+        return true;  
     }
 
     private void saveToDatabase(String patientName, String patientId, String diseaseType, String daysAdmitted, boolean hasHealthInsurance, String totalBill) {
@@ -187,16 +174,14 @@ public class PatientManagementSystem extends JFrame {
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            // Set parameters for the query
+ 
             pstmt.setString(1, patientName);
             pstmt.setString(2, patientId);
             pstmt.setString(3, diseaseType);
             pstmt.setInt(4, Integer.parseInt(daysAdmitted));
             pstmt.setBoolean(5, hasHealthInsurance);
             pstmt.setDouble(6, Double.parseDouble(totalBill));
-
-            // Execute the query
+ 
             pstmt.executeUpdate();
             JOptionPane.showMessageDialog(this, "Patient data saved successfully!");
         } catch (SQLException ex) {
