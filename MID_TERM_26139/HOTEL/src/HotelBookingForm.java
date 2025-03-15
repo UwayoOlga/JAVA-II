@@ -108,11 +108,9 @@ public class HotelBookingForm extends JFrame {
         add(totalPriceLabel);
         add(totalPriceField);
         add(saveButton);
-
-        // Event Listener for Room Type Combo Box
+ 
         roomTypeComboBox.addActionListener(e -> calculateRoomRate());
-
-        // Event Listener for Check-Out Date Field
+ 
         checkOutDateField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -120,8 +118,7 @@ public class HotelBookingForm extends JFrame {
                 calculateTaxDiscountAndTotalPrice();
             }
         });
-
-        // Event Listener for Save Button
+ 
         saveButton.addActionListener(e -> {
             String clientId = clientIdField.getText();
             String firstName = firstNameField.getText();
@@ -135,20 +132,17 @@ public class HotelBookingForm extends JFrame {
             String tax = taxField.getText();
             String discount = discountField.getText();
             String totalPrice = totalPriceField.getText();
-
-            // Validate input
+ 
             if (!validateInput(clientId, firstName, lastName, mobilePhone, checkInDate, checkOutDate)) {
-                return; // Stop if validation fails
+                return; 
             }
-
-            // Save data to the database
+ 
             saveToDatabase(clientId, firstName, lastName, mobilePhone, roomType, roomRate, checkInDate, checkOutDate, numberOfNights, tax, discount, totalPrice);
         });
 
         setVisible(true);
     }
-
-    // Method to calculate Room Rate
+ 
     private void calculateRoomRate() {
         String roomType = (String) roomTypeComboBox.getSelectedItem();
         double roomRate = 0;
@@ -165,8 +159,7 @@ public class HotelBookingForm extends JFrame {
         }
         roomRateField.setText(String.valueOf(roomRate));
     }
-
-    // Method to calculate Number of Nights
+ 
     private void calculateNumberOfNights() {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -181,8 +174,7 @@ public class HotelBookingForm extends JFrame {
             numberOfNightsField.setText("");
         }
     }
-
-    // Method to calculate Tax, Discount, and Total Price
+ 
     private void calculateTaxDiscountAndTotalPrice() {
         try {
             double roomRate = Double.parseDouble(roomRateField.getText());
@@ -201,22 +193,19 @@ public class HotelBookingForm extends JFrame {
             totalPriceField.setText("");
         }
     }
-
-    // Method to validate input
+ 
     private boolean validateInput(String clientId, String firstName, String lastName, String mobilePhone, String checkInDate, String checkOutDate) {
-        // Validate Client ID
+        
         if (!Pattern.matches("\\d+", clientId)) {
             JOptionPane.showMessageDialog(this, "Client ID must be a number.");
             return false;
         }
-
-        // Validate First Name and Last Name
+ 
         if (!Pattern.matches("[a-zA-Z ]+", firstName) || !Pattern.matches("[a-zA-Z ]+", lastName)) {
             JOptionPane.showMessageDialog(this, "First Name and Last Name must contain only alphabetic characters and spaces.");
             return false;
         }
-
-        // Validate Mobile Phone
+ 
         if (!Pattern.matches("07\\d{8}", mobilePhone)) {
             JOptionPane.showMessageDialog(this, "Mobile Phone must start with '07' and have 10 digits.");
             return false;
