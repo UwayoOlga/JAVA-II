@@ -182,8 +182,7 @@ public class registrationform extends JFrame {
             pstmt.setString(4, gender);
             pstmt.setString(5, course);
             pstmt.setDouble(6, Double.parseDouble(fees));
-
-            // Execute the query
+ 
             pstmt.executeUpdate();
             JOptionPane.showMessageDialog(this, "Student data saved successfully!");
         } catch (SQLException ex) {
@@ -191,15 +190,14 @@ public class registrationform extends JFrame {
             JOptionPane.showMessageDialog(this, "Error saving student data: " + ex.getMessage());
         }
     }
-
-    // Method to clear the form
+ 
     private void clearForm() {
         firstNameField.setText("");
         lastNameField.setText("");
         dobField.setText("");
         maleRadioButton.setSelected(false);
         femaleRadioButton.setSelected(false);
-        courseComboBox.setSelectedIndex(0); // Reset to first item
+        courseComboBox.setSelectedIndex(0); 
         feesField.setText("");
         termsCheckBox.setSelected(false);
     }
