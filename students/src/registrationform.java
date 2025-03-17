@@ -6,8 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
-public class registrationform extends JFrame {
-    // Declare components as instance variables for access in event listeners
+public class registrationform extends JFrame { 
     private JTextField firstNameField, lastNameField, dobField, feesField;
     private JRadioButton maleRadioButton, femaleRadioButton;
     private JComboBox<String> courseComboBox;
@@ -17,35 +16,31 @@ public class registrationform extends JFrame {
         setTitle("Student Registration System");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null); // Use absolute positioning
-
-        // Set light pink background for the JFrame
-        getContentPane().setBackground(new Color(255, 182, 193)); // Light pink
-
-        // Labels with darker pink foreground
+        setLayout(null);  
+        getContentPane().setBackground(new Color(255, 182, 193));  
+ 
         JLabel firstNameLabel = new JLabel("First Name:");
         firstNameLabel.setBounds(50, 50, 150, 25);
-        firstNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        firstNameLabel.setForeground(new Color(199, 21, 133));  
         JLabel lastNameLabel = new JLabel("Last Name:");
         lastNameLabel.setBounds(50, 80, 150, 25);
-        lastNameLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        lastNameLabel.setForeground(new Color(199, 21, 133));  
         JLabel dobLabel = new JLabel("Date of Birth (YYYY-MM-DD):");
         dobLabel.setBounds(50, 110, 150, 25);
-        dobLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        dobLabel.setForeground(new Color(199, 21, 133));  
         JLabel genderLabel = new JLabel("Gender:");
         genderLabel.setBounds(50, 140, 150, 25);
-        genderLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        genderLabel.setForeground(new Color(199, 21, 133));  
         JLabel courseLabel = new JLabel("Selected Course:");
         courseLabel.setBounds(50, 170, 150, 25);
-        courseLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        courseLabel.setForeground(new Color(199, 21, 133));  
         JLabel feesLabel = new JLabel("Fees:");
         feesLabel.setBounds(50, 200, 150, 25);
-        feesLabel.setForeground(new Color(199, 21, 133)); // Darker pink
+        feesLabel.setForeground(new Color(199, 21, 133));  
         JLabel termsLabel = new JLabel("Terms and Conditions:");
         termsLabel.setBounds(50, 230, 150, 25);
-        termsLabel.setForeground(new Color(199, 21, 133)); // Darker pink
-
-        // Text Fields
+        termsLabel.setForeground(new Color(199, 21, 133)); 
+        
         firstNameField = new JTextField();
         firstNameField.setBounds(250, 50, 200, 25);
         lastNameField = new JTextField();
@@ -54,12 +49,11 @@ public class registrationform extends JFrame {
         dobField.setBounds(250, 110, 200, 25);
         feesField = new JTextField();
         feesField.setBounds(250, 200, 200, 25);
-        feesField.setEditable(false); // Fees field should not be editable
-
-        // Gender Radio Buttons
+        feesField.setEditable(false); 
+        
         maleRadioButton = new JRadioButton("Male");
         maleRadioButton.setBounds(250, 140, 80, 25);
-        maleRadioButton.setBackground(new Color(255, 182, 193)); // Light pink background
+        maleRadioButton.setBackground(new Color(255, 182, 193));  
         femaleRadioButton = new JRadioButton("Female");
         femaleRadioButton.setBounds(330, 140, 80, 25);
         femaleRadioButton.setBackground(new Color(255, 182, 193)); // Light pink background
