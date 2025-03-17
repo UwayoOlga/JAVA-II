@@ -56,33 +56,28 @@ public class registrationform extends JFrame {
         maleRadioButton.setBackground(new Color(255, 182, 193));  
         femaleRadioButton = new JRadioButton("Female");
         femaleRadioButton.setBounds(330, 140, 80, 25);
-        femaleRadioButton.setBackground(new Color(255, 182, 193)); // Light pink background
+        femaleRadioButton.setBackground(new Color(255, 182, 193));  
         ButtonGroup genderGroup = new ButtonGroup();
         genderGroup.add(maleRadioButton);
         genderGroup.add(femaleRadioButton);
-
-        // Course Combo Box
+ 
         courseComboBox = new JComboBox<>(new String[]{"Java", "Python", "C++"});
         courseComboBox.setBounds(250, 170, 200, 25);
-
-        // Terms and Conditions Checkbox
+ 
         termsCheckBox = new JCheckBox("Accept Terms and Conditions");
         termsCheckBox.setBounds(250, 230, 200, 25);
-        termsCheckBox.setBackground(new Color(255, 182, 193)); // Light pink background
-
-        // Save Button
+        termsCheckBox.setBackground(new Color(255, 182, 193)); 
+        
         JButton saveButton = new JButton("Save");
         saveButton.setBounds(250, 270, 100, 30);
-        saveButton.setBackground(new Color(199, 21, 133)); // Darker pink background
-        saveButton.setForeground(Color.WHITE); // White text
-
-        // Clear Button
+        saveButton.setBackground(new Color(199, 21, 133)); 
+        saveButton.setForeground(Color.WHITE); 
+        
         JButton clearButton = new JButton("Clear");
         clearButton.setBounds(360, 270, 100, 30);
-        clearButton.setBackground(new Color(199, 21, 133)); // Darker pink background
-        clearButton.setForeground(Color.WHITE); // White text
-
-        // Add components to the JFrame
+        clearButton.setBackground(new Color(199, 21, 133)); 
+        clearButton.setForeground(Color.WHITE); 
+        
         add(firstNameLabel);
         add(firstNameField);
         add(lastNameLabel);
@@ -100,11 +95,10 @@ public class registrationform extends JFrame {
         add(termsCheckBox);
         add(saveButton);
         add(clearButton);
-
-        // Event Listener for Course Selection
+ 
         courseComboBox.addActionListener(e -> calculateFees(courseComboBox, feesField));
 
-        // Event Listener for Save Button
+        
         saveButton.addActionListener(e -> {
             String firstName = firstNameField.getText();
             String lastName = lastNameField.getText();
@@ -113,23 +107,19 @@ public class registrationform extends JFrame {
             String course = (String) courseComboBox.getSelectedItem();
             String fees = feesField.getText();
             boolean termsAccepted = termsCheckBox.isSelected();
-
-            // Validate input
+ 
             if (!validateInput(firstName, lastName, dob, gender, termsAccepted)) {
-                return; // Stop if validation fails
+                return;  
             }
-
-            // Save data to the database
+ 
             saveToDatabase(firstName, lastName, dob, gender, course, fees);
         });
-
-        // Event Listener for Clear Button
+ 
         clearButton.addActionListener(e -> clearForm());
 
         setVisible(true);
     }
-
-    // Method to calculate fees based on course selection
+ 
     private void calculateFees(JComboBox<String> courseComboBox, JTextField feesField) {
         String selectedCourse = (String) courseComboBox.getSelectedItem();
         switch (selectedCourse) {
@@ -144,56 +134,48 @@ public class registrationform extends JFrame {
                 break;
         }
     }
-
-    // Method to validate input
+ 
     private boolean validateInput(String firstName, String lastName, String dob, String gender, boolean termsAccepted) {
-        // Validate First Name
+        
         if (!Pattern.matches("[a-zA-Z ]+", firstName)) {
             JOptionPane.showMessageDialog(this, "First Name must contain only alphabetic characters and spaces.");
             return false;
         }
-
-        // Validate Last Name
+ 
         if (!Pattern.matches("[a-zA-Z ]+", lastName)) {
             JOptionPane.showMessageDialog(this, "Last Name must contain only alphabetic characters and spaces.");
             return false;
         }
-
-        // Validate Date of Birth (YYYY-MM-DD)
+ 
         if (!Pattern.matches("\\d{4}-\\d{2}-\\d{2}", dob)) {
             JOptionPane.showMessageDialog(this, "Date of Birth must be in the format YYYY-MM-DD.");
             return false;
         }
-
-        // Validate Gender
+ 
         if (!gender.equals("Male") && !gender.equals("Female")) {
             JOptionPane.showMessageDialog(this, "Please select a gender.");
             return false;
         }
-
-        // Validate Terms and Conditions
+ 
         if (!termsAccepted) {
             JOptionPane.showMessageDialog(this, "Please accept the terms and conditions.");
             return false;
         }
 
-        return true; // All validations passed
+        return true; 
     }
-
-    // Method to save data to the database
+ 
     private void saveToDatabase(String firstName, String lastName, String dob, String gender, String course, String fees) {
-        // Database connection details
-        String url = "jdbc:mysql://localhost:3306/students"; // Update with your database name
-        String user = "root"; // Update with your database username
-        String password = "California123!"; // Update with your database password
-
-        // SQL query to insert data
+         
+        String url = "jdbc:mysql://localhost:3306/students";  
+        String user = "root";  
+        String password = "California123!";
+        
         String query = "INSERT INTO students (first_name, last_name, date_of_birth, gender, course, fees) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            // Set parameters for the query
+ 
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setString(3, dob);
