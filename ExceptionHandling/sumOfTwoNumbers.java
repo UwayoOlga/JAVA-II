@@ -1,4 +1,4 @@
-import java.util.Scanner;
+/* import java.util.Scanner;
 
 public class sumOfTwoNumbers {
     public static void main(String[] args) {
@@ -22,3 +22,4 @@ public class sumOfTwoNumbers {
     }
     }   
 }
+*/
