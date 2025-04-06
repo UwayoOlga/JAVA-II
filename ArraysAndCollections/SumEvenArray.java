@@ -22,7 +22,7 @@ public class SumEvenArray {
         for (int k = 0; k < size; k++) {
             System.out.print(els[k] + " ");
         }
- 
+
         for (int num : els) {
             if (num % 2 == 0) {
                 sum += num;
